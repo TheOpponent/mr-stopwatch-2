@@ -61,6 +61,7 @@ class Frame(wx.Frame):
         self.total_time_text = wx.StaticText(main_panel,label=self.time_string(self.total_time))
         self.total_time_text.SetFont(self.large_font)
         self.load_time()
+        self.write_time()
 
         # Timer control buttons.
         self.start_button = wx.Button(main_panel,label="Start")
@@ -178,7 +179,10 @@ class Frame(wx.Frame):
                     self.start_button.Enable()
                     self.change_time_button.Enable()
                     self.reset_button.Enable()
-                    self.load_time()
+                    self.session_time = 0
+                    self.total_time = 0
+                    self.write_time()
+                    self.update_times()
 
     def on_rename_button(self,event):
         with wx.TextEntryDialog(self,"New timer name:",value=self.current_timer) as dialog:

@@ -1,5 +1,7 @@
 # Mr. Stopwatch mark II
 
+![0012087](https://github.com/TheOpponent/mr-stopwatch-2/assets/8432212/ba2fda79-473a-43c9-bf03-bf186a0bd6a2)
+
 A simple Python program written in wxPython that keeps time and writes it to time.txt. Two times are kept:
 - Session time, kept until the program is closed or the active timer is switched.
 - Total time, kept until the Reset button is pressed.

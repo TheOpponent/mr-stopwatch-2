@@ -271,6 +271,9 @@ class Frame(wx.Frame):
         self.total_time = 0
         self.session_time_text.SetLabel(self.time_string(0))
         self.total_time_text.SetLabel(self.time_string(0))
+        self.config["times"][self.current_timer] = 0
+        self.write_time()
+        self.update_times()
 
     def on_exit(self,event):
         self.config["last_timer"] = (self.current_timer if self.current_timer is not None else "")

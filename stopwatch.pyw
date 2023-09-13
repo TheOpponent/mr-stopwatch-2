@@ -93,9 +93,13 @@ class Frame(wx.Frame):
         buttons_sizer.Add(self.change_time_button,1)
         buttons_sizer.Add(self.reset_button,1)
 
+        self.always_on_top_switch = wx.CheckBox(main_panel,label="Always On Top")
+        self.always_on_top_switch.Bind(wx.EVT_CHECKBOX,self.on_always_on_top)
+
         panel_sizer.Add(timer_select_sizer,0,wx.ALL,border=5)
         panel_sizer.Add(timer_label_sizer,0,wx.CENTER,border=5)
         panel_sizer.Add(buttons_sizer,0,wx.EXPAND | wx.ALL,border=5)
+        panel_sizer.Add(self.always_on_top_switch,0,wx.ALL,border=5)
 
         main_panel.SetSizer(panel_sizer)
         main_sizer.Add(main_panel,1,wx.EXPAND)
@@ -115,7 +119,7 @@ class Frame(wx.Frame):
 
         pattern = r'^\d{1,}:[0-5][0-9]:[0-5][0-9]$'
         if re.match(pattern, time_string):
-            seconds = int(time_string[-2::1])
+            seconds = int(time_string[-2:])
             minutes = int(time_string[-5:-3]) * 60
             hours = int(time_string[0:-6]) * 3600
 
@@ -188,7 +192,7 @@ class Frame(wx.Frame):
         with wx.TextEntryDialog(self,"New timer name:",value=self.current_timer) as dialog:
             if dialog.ShowModal() == wx.ID_OK:
                 name = dialog.GetValue()
-                if name != "":
+                if name != "" and name != self.current_timer:
                     if name in self.config["times"].keys():
                         error = wx.MessageDialog(self,"New timer name already exists.",caption="Error Renaming Timer",style=wx.ICON_WARNING)
                         error.ShowModal()
@@ -281,6 +285,13 @@ class Frame(wx.Frame):
             config.write(json.dumps(self.config,indent=4))
         with open("time.txt","w") as time:
             time.write("--:--:--\n--:--:--")
+        event.Skip()
+
+    def on_always_on_top(self,event):
+        if self.always_on_top_switch.GetValue() is True:
+            self.SetWindowStyle(wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX))
+        else:
+            self.SetWindowStyle(wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.MAXIMIZE_BOX))
         event.Skip()
 
 
